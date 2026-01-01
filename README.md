@@ -24,7 +24,7 @@ Gamescope is excellent, but it requires you to manually specify `-w`, `-h`, `-W`
 ## Installation
 
 ### Manual
-1. Change directory into your home directory:
+1. Change directory to home directory:
    ```bash
    cd ~
    ```
