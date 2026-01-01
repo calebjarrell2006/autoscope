@@ -32,7 +32,8 @@ Gamescope is excellent, but it requires you to manually specify `-w`, `-h`, `-W`
    ```bash
    cd autoscope
    ```
-3. Run the install script.
+3. Make the install script executable and run it.
    ```bash
+   chmod +x install.sh
    ./install.sh
    ```
