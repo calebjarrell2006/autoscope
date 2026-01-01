@@ -13,7 +13,7 @@ Gamescope is excellent, but it requires you to manually specify `-w`, `-h`, `-W`
 * **Distros:** Works on any Linux distribution (Arch, Fedora, Debian, Ubuntu, etc.).
 * **Sessions (X11 & Wayland):**
   * **X11:** Works natively.
-  * **Wayland:** Works on compositors that expose physical display names to XWayland (e.g., KDE Plasma, Hyprland, Sway).
+  * **Wayland:** Works on compositors that expose physical display names to XWayland.
   * *Note:* If your Wayland session abstracts display names (e.g., renaming them to `XWAYLAND0`), Autoscope may fall back to 1080p.
 
 ## Dependencies
