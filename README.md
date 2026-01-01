@@ -27,5 +27,12 @@ Gamescope is excellent, but it requires you to manually specify `-w`, `-h`, `-W`
 1. Clone the repository:
    ```bash
    git clone [https://github.com/calebjarrell2006/autoscope.git](https://github.com/calebjarrell2006/autoscope.git)
+   ```
+2. Change directory to autoscope install folder.
+   ```bash
    cd autoscope
+   ```
+3. Run the install script.
+   ```bash
    ./install.sh
+   ```
