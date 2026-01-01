@@ -41,3 +41,14 @@ Gamescope is excellent, but it requires you to manually specify `-w`, `-h`, `-W`
    chmod +x install.sh
    ./install.sh
    ```
+
+## Usage
+Autoscope can be used in the terminal or as a steam launch option.
+### Terminal
+```bash
+autoscope program-name
+```
+### Launch Option
+```bash
+autoscope %command%
+```
