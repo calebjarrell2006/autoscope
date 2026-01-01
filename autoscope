@@ -1,0 +1,84 @@
+#!/bin/bash
+
+# --- HELPER FUNCTIONS ---
+
+usage() {
+    echo "Usage: $(basename "$0") [command]"
+    echo "Example: $(basename "$0") steam -bigpicture"
+    exit 1
+}
+
+# 0. Check for dependencies (Safety Check)
+for cmd in xrandr gamescope awk grep find; do
+    if ! command -v $cmd &> /dev/null; then
+        echo "Error: '$cmd' is not installed. Please install it first."
+        exit 1
+    fi
+done
+
+# Check if arguments are provided
+if [ $# -eq 0 ]; then
+    echo "Error: No command specified."
+    usage
+fi
+
+if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+    usage
+fi
+
+
+# --- ORIGINAL DETECTION LOGIC ---
+
+echo "🔍 Detecting display configuration..."
+
+# 1. Get the Xrandr name of the primary display (e.g., DP-1, HDMI-1)
+xrandr_name=$(xrandr | grep " connected primary" | awk '{print $1}')
+
+# Safety: If no primary is set, grab the first connected one to prevent crash
+if [ -z "$xrandr_name" ]; then
+    xrandr_name=$(xrandr | grep " connected" | head -n 1 | awk '{print $1}')
+fi
+
+echo "Target Display: $xrandr_name"
+
+# 2. Find the matching Kernel Device path in /sys/class/drm
+# Note: Xrandr might call it "HDMI-1" while Kernel calls it "HDMI-A-1", so we fuzzy match.
+if [ -n "$xrandr_name" ]; then
+    # We look for a folder inside /sys/class/drm/ that ends with the display name
+    # We strip "A-" just in case (e.g. converting HDMI-A-1 to HDMI-1 for matching)
+    clean_name=$(echo "$xrandr_name" | sed 's/-A-/-/g')
+    
+    # Find the modes file. We try exact match first, then loose match.
+    modes_file=$(find /sys/class/drm -name "*${xrandr_name}" -o -name "*${clean_name}" 2>/dev/null | grep "/modes$" | head -n 1)
+    
+    # If standard lookup fails, just look for the folder that matches the end of the string
+    if [ -z "$modes_file" ]; then
+        # This searches for card0-DP-1 or similar
+        sys_folder=$(find /sys/class/drm -name "*${xrandr_name}" 2>/dev/null | head -n 1)
+        if [ -n "$sys_folder" ]; then
+             modes_file="${sys_folder}/modes"
+        fi
+    fi
+fi
+
+# 3. Read the first line of the modes file (Hardware Native Resolution)
+if [ -f "$modes_file" ]; then
+    # The 'modes' file lists raw hardware resolutions supported. Line 1 is usually Native.
+    raw_res=$(head -n 1 "$modes_file")
+    w=$(echo "$raw_res" | cut -d'x' -f1)
+    h=$(echo "$raw_res" | cut -d'x' -f2)
+    echo "✅ Kernel Hardware Report: ${w}x${h} (Found at $modes_file)"
+else
+    # FALLBACK: If we can't read kernel modes, default to 1920x1080 to prevent crash
+    echo "⚠️ Could not read system hardware modes. Defaulting to 1920x1080."
+    w=1920
+    h=1080
+fi
+
+# --- EXECUTION ---
+
+# 4. Run Gamescope with the physical resolution
+echo "🚀 Launching Gamescope at ${w}x${h}..."
+echo "-------------------------------------"
+# Added -W -H to match output resolution to internal resolution
+gamescope -f --force-grab -w "$w" -h "$h" -W "$w" -H "$h" -- "$@"
