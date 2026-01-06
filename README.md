@@ -48,7 +48,17 @@ Autoscope can be used in the terminal or as a steam launch option.
 ```bash
 autoscope program-name
 ```
-### Launch Option
+### Steam Launch Option
 ```bash
 autoscope %command%
+```
+
+### Steam Launch Option with environment variables
+```bash
+MANGOHUD=1 autoscope %command%
+```
+
+### Steam Launch Option with args
+```bash
+autoscope -r 60 -- %command%
 ```
