@@ -4,7 +4,7 @@
 
 usage() {
     echo "Usage: $(basename "$0") [gamescope options] -- [command]"
-    echo "Example: $(basename "$0") -W 1920 -H 1080 -- %command%"
+    echo "Example: $(basename "$0") -w 1920 -h 1080 -- %command%"
     exit 1
 }
 
