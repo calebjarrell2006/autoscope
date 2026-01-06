@@ -50,12 +50,12 @@ autoscope program-name
 ```
 ### Steam Launch Option
 ```bash
-autoscope %command%
+autoscope -- %command%
 ```
 
 ### Steam Launch Option with environment variables
 ```bash
-MANGOHUD=1 autoscope %command%
+MANGOHUD=1 autoscope -- %command%
 ```
 
 ### Steam Launch Option with args
