@@ -62,3 +62,27 @@ MANGOHUD=1 autoscope %command%
 ```bash
 autoscope -r 60 -- %command%
 ```
+
+
+## Un-installation
+
+### Manual
+1. Change directory to home directory:
+   ```bash
+   cd ~
+   ```
+2. Change directory to autoscope install folder.
+   ```bash
+   cd autoscope
+   ```
+   *IF YOU DELETED THE AUTOSCOPE DIRECTORY, RERUN THE CLONE COMMAND:*
+   
+   Clone the repository:
+   ```bash
+   git clone https://github.com/calebjarrell2006/autoscope.git
+   ```
+4. Make the un-install script executable and run it.
+   ```bash
+   chmod +x uninstall.sh
+   ./uninstall.sh
+   ```
